@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LISTEN AND INPUT THE NUMBER</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+    #start-screen, #game-screen {
+      display: none;
+    }
+    #start-screen.active, #game-screen.active {
+      display: block;
+    }
+    h1 {
+      color: #333;
+    }
+    .video-container {
+      margin: 20px 0;
+    }
+    #answer-input {
+      width: 150px;
+      height: 40px;
+      font-size: 18px;
+      text-align: center;
+      margin-top: 20px;
+    }
+    #check-button, #continue-button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-left: 10px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #restart-button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-top: 20px;
+      background: #e67e22;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: red;
+    }
+    #good-job {
+      display: none;
+      font-size: 48px;
+      font-weight: bold;
+      color: green;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="start-screen" class="active">
+    <h1>LISTEN AND INPUT THE NUMBER</h1>
+    <p>Press Start to begin the activity and enter the numbers in the correct order.</p>
+    <button onclick="startGame()">Start</button>
+  </div>
+
+  <div id="game-screen">
+    <h1>LISTEN AND INPUT THE NUMBER</h1>
+    <div class="video-container">
+      <iframe 
+        id="game-video" 
+        width="800" 
+        height="580" 
+        src="https://player.vimeo.com/video/1114902105" 
+        frameborder="0" 
+        allowfullscreen>
+      </iframe>
+    </div>
+    <div>
+      <input type="text" id="answer-input" placeholder="Type number">
+      <button id="check-button" onclick="checkNumber()">Check</button>
+      <button id="continue-button" onclick="nextNumber()">Continue</button>
+    </div>
+    <div id="message"></div>
+    <div id="good-job">GOOD JOB!</div>
+    <button id="restart-button" onclick="restartGame()">Restart</button>
+  </div>
+
+  <script>
+    const sequence = [49, 18, 3, 46, 12, 34, 22, 9, 27, 1, 38, 15, 50, 4, 29, 41, 6, 33, 11, 20, 47, 19, 36, 8, 45, 23, 5, 39, 14, 30, 2, 44, 17, 35, 25, 10, 48, 32, 7, 43, 21, 26, 13, 37, 42, 28, 31, 6, 16, 24, 40];
+    let currentIndex = 0;
+
+    function startGame() {
+      document.getElementById('start-screen').classList.remove('active');
+      document.getElementById('game-screen').classList.add('active');
+    }
+
+    function checkNumber() {
+      const input = document.getElementById('answer-input').value.trim();
+      const message = document.getElementById('message');
+      if (parseInt(input) === sequence[currentIndex]) {
+        message.textContent = "Correct!";
+        message.style.color = "green";
+      } else {
+        message.textContent = "ERROR! Try again";
+        message.style.color = "red";
+      }
+    }
+
+    function nextNumber() {
+      const input = document.getElementById('answer-input').value.trim();
+      const message = document.getElementById('message');
+      if (parseInt(input) === sequence[currentIndex]) {
+        currentIndex++;
+        document.getElementById('answer-input').value = "";
+        message.textContent = "";
+        if (currentIndex === sequence.length) {
+          document.getElementById('good-job').style.display = 'block';
+          startConfetti();
+        }
+      } else {
+        message.textContent = "ERROR! Try again";
+        message.style.color = "red";
+      }
+    }
+
+    function restartGame() {
+      currentIndex = 0;
+      document.getElementById('answer-input').value = "";
+      document.getElementById('message').textContent = "";
+      document.getElementById('good-job').style.display = 'none';
+      stopConfetti();
+    }
+
+    // Confetti simulation
+    function startConfetti() {
+      alert("Confetti starts! (Add real confetti library here)");
+    }
+    function stopConfetti() {
+      // Stop confetti animation if implemented
+    }
+  </script>
+</body>
+</html>
